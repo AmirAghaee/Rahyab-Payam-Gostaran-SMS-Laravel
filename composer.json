@@ -9,10 +9,20 @@
             "email": "amir.aghaee73@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "ext-soap": "*"
+    },
     "autoload": {
         "psr-4": {
+            "App\\": "app/",
             "AmirAghaee\\rahyabsms\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AmirAghaee\\rahyabsms\\RahyabServiceProvider"
+            ]
         }
     }
 }
