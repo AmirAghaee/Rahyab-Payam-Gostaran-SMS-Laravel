@@ -34,5 +34,4 @@ class SmsLog extends Model
         'status',
     ];
 
-
 }
