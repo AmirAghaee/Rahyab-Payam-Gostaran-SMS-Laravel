@@ -2,6 +2,9 @@
 
 namespace AmirAghaee\rahyabsms;
 
+
+use AmirAghaee\rahyabsms\Exceptions\RahyabSmsException;
+use AmirAghaee\rahyabsms\Log\SmsLogging;
 use SoapClient;
 
 class RahyabService
@@ -15,19 +18,20 @@ class RahyabService
     public function __construct()
     {
         if (!extension_loaded('curl')) {
-            die('Curl extension not loaded');
+            throw new RahyabSmsException("Curl extension not loaded");
         }
 
         if (!extension_loaded('soap')) {
-            die('Soap extension not loaded');
+            throw new RahyabSmsException("Soap extension not loaded");
         }
 
+        $this->baseUrl = 'http://www.linepayamak.ir/Post/Send.asmx?wsdl';
         $this->username = env('RAHYAB_SMS_USERNAME');
         $this->password = env('RAHYAB_SMS_PASSWORD');
         $this->shortcode = env('RAHYAB_SMS_SHORTCODE');
 
         if (is_null($this->username) || is_null($this->password)) {
-            die('env value has not been sent');
+            throw new RahyabSmsException("env values has not been sent");
         }
 
         $this->option = array(
@@ -40,9 +44,17 @@ class RahyabService
                     'allow_self_signed' => true
                 )
             )));
-        $this->baseUrl = 'http://www.linepayamak.ir/Post/Send.asmx?wsdl';
     }
 
+    /**
+     * Simple send message with smsonline.ir account and line number
+     *
+     * @param $number
+     * @param $message
+     * @param null $recId
+     *
+     * @return string, return status
+     */
     public function send($number, $message, $recId = null)
     {
         try {
@@ -58,13 +70,21 @@ class RahyabService
                 'recId' => $recId == null ? array(0) : array((string)$recId),
                 'status' => array(0),
             ];
+            $status = ($client->SendSms($parameters))->SendSmsResult;
 
-            return ($client->SendSms($parameters))->SendSmsResult;
+            SmsLogging::loggingInDB($number, $message, $status, $recId);
+
+            return $status;
         } catch (\SoapFault $e) {
             echo $e->getMessage();
         }
     }
 
+    /**
+     * this method return your credit in http://smsonline.ir/
+     *
+     * @return string
+     */
     public function getCredit()
     {
         try {
@@ -79,6 +99,11 @@ class RahyabService
         }
     }
 
+    /**
+     * this method return your expire data account in http://smsonline.ir/
+     *
+     * @return string
+     */
     public function GetExpireDate()
     {
         try {

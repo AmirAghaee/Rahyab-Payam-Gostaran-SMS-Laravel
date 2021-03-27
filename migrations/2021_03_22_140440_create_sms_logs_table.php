@@ -18,7 +18,7 @@ class CreateSmsLogsTable extends Migration
             $table->string('shortcode');
             $table->string('to');
             $table->text('message');
-            $table->string('recId');
+            $table->string('recId')->nullable();
             $table->string('status');
             $table->timestamps();
         });

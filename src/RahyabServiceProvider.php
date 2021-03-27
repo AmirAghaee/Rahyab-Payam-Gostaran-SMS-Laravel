@@ -8,7 +8,7 @@ class RahyabServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        if(env('RAHYAB_SMS_ENABLE_LOGS')) $this->loadMigrationsFrom(__DIR__ . '/../migrations');
     }
 
     public function register()

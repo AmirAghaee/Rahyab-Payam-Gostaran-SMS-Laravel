@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace AmirAghaee\rahyabsms\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
