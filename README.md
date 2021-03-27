@@ -79,15 +79,17 @@ php artisan migrate
 ```
 <br>
 For accessing to the model use following namespace:
+
 ```php
 namespace AmirAghaee\rahyabsms\Models;
 ```
+
 #### example:
+
+
 ```php
 SmsLog::get();
 ```
-
-
 
 ## License
 Freely distributable under the terms of the [MIT](https://opensource.org/licenses/MIT) license.    
