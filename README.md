@@ -14,9 +14,6 @@ You can download the api gateway document [here](https://smsonline.ir/files/WebS
 ## Table of Contents    
 * [Install](#Install)  
 * [Usage](#Usage)
-  * [send simple sms](#send simple sms)
-  * [check credit](#check credit)   
-  * [check expire](#check expire)   
 * [Logging](#Logging)
 * [License](#License)
 
