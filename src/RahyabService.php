@@ -81,6 +81,42 @@ class RahyabService
     }
 
     /**
+     * send message with smsonline.ir account and line number to several number
+     *
+     * @param array $numbers
+     * @param $message
+     * @param null $recId
+     *
+     * @return string, return status
+     */
+    public function sendAll($numbers, $message, $recId = null)
+    {
+        try {
+            $client = new SoapClient($this->baseUrl, $this->option);
+            $parameters = [
+                'username' => $this->username,
+                'password' => $this->password,
+                'from' => $this->shortcode,
+                'to' => $numbers,
+                'text' => $message,
+                'isflash' => false,
+                'udh' => "",
+                'recId' => $recId == null ? array(0) : array((string)$recId),
+                'status' => array(0),
+            ];
+            $status = ($client->SendSms($parameters))->SendSmsResult;
+            foreach ($numbers as $number) {
+                SmsLogging::loggingInDB($number, $message, $status, $recId);
+            }
+
+            return $status;
+        } catch (\SoapFault $e) {
+            echo $e->getMessage();
+        }
+    }
+
+
+    /**
      * this method return your credit in http://smsonline.ir/
      *
      * @return string
