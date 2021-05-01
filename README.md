@@ -54,6 +54,17 @@ Rahyabsms::send('09xxxxxxxxx','Hello World!');
  | message | yes | Text to be sent | string |
  | recId | No | assign a ID to check status of delivery | string |
 
+## send sms to several users
+You can send a text message to several numbers with this method:
+```php
+$numbers = [
+        '09xxxxxxxx1',
+        '09xxxxxxxx2',
+        '09xxxxxxxx3'
+    ];
+Rahyabsms::sendAll($numbers, 'Hello World!');
+```
+
 ## check credit
 You can check balance of your account with this method:
 ```php
